@@ -1,9 +1,5 @@
-import { useContext } from "react";
-import { PostContext } from "./PostsContent";
 import { useState } from "react";
 import Reply from "./Reply";
-const postsUrl = "http://localhost:3000/posts";
-
 function Comment({
   postId,
   commentId,
@@ -12,13 +8,15 @@ function Comment({
   upvotes,
   downvotes,
   replies,
+  setPost,
+  postUrl,
 }) {
   const token = localStorage.getItem("token");
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
   const [showReplyContainer, toggleReplyContainer] = useState(false);
   const [replyValue, setReplyValue] = useState("");
-  const { setPosts } = useContext(PostContext);
+
   async function handleUpvote() {
     const headers = { Authorization: `Bearer ${token}` };
     const responseForReq = await fetch(
@@ -31,9 +29,9 @@ function Comment({
     if (responseForReq.status === 409) {
       setUpvoted(true);
     } else {
-      const response = await fetch(postsUrl);
+      const response = await fetch(postUrl);
       const data = await response.json();
-      setPosts(data);
+      setPost(data);
     }
   }
   async function handleDownvote() {
@@ -48,9 +46,9 @@ function Comment({
     if (responseForReq.status === 409) {
       setDownvoted(true);
     } else {
-      const response = await fetch(postsUrl);
+      const response = await fetch(postUrl);
       const data = await response.json();
-      setPosts(data);
+      setPost(data);
     }
   }
 
@@ -70,9 +68,9 @@ function Comment({
         body: JSON.stringify({ content: replyValue }),
       }
     );
-    const posts = await fetch(postsUrl);
+    const posts = await fetch(postUrl);
     const data = await posts.json();
-    setPosts(data);
+    setPost(data);
   }
   return (
     <div className="commentContainer">
@@ -89,6 +87,7 @@ function Comment({
       {replies.map((currReply) => {
         return (
           <Reply
+            key={currReply.id}
             authorName={currReply.user.name}
             content={currReply.content}
           ></Reply>

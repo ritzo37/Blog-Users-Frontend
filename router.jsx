@@ -4,6 +4,7 @@ import LogIn from "./src/components/LogIn";
 import PostPage from "./src/components/PostPage";
 import { createBrowserRouter } from "react-router-dom";
 import AlreadyLoggedIn from "./src/components/AlreadyLoggin";
+import ExpandedPost from "./src/components/ExpandedPost";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/posts",
     element: <PostPage />,
+  },
+  {
+    path: "/posts/:postId",
+    element: <ExpandedPost />,
   },
 ]);
 

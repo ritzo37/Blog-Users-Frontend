@@ -1,10 +1,7 @@
-import { useContext, useState } from "react";
-import { PostContext } from "./PostsContent";
-const postsUrl = "http://localhost:3000/posts";
+import { useState } from "react";
 
-function AddComment({ postId }) {
+function AddComment({ postId, setPost, postUrl }) {
   const addCommentUrl = `http://localhost:3000/posts/${postId}/comments/`;
-  const { setPosts } = useContext(PostContext);
   const [addCommentClicked, setAddCommentClicked] = useState(false);
   const [content, setContent] = useState("");
 
@@ -19,9 +16,9 @@ function AddComment({ postId }) {
       },
       body: JSON.stringify({ content, postId }),
     });
-    const res = await fetch(postsUrl);
+    const res = await fetch(postUrl);
     const data = await res.json();
-    setPosts(data);
+    setPost(data);
   }
 
   function toggleAddComment() {
