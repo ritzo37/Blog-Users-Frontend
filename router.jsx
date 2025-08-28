@@ -1,6 +1,7 @@
 import Home from "./src/components/Home";
 import SignUp from "./src/components/SignUp";
 import LogIn from "./src/components/LogIn";
+import PostPage from "./src/components/PostPage";
 import { createBrowserRouter } from "react-router-dom";
 import AlreadyLoggedIn from "./src/components/AlreadyLoggin";
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/already-logged-in",
     element: <AlreadyLoggedIn />,
+  },
+  {
+    path: "/posts",
+    element: <PostPage />,
   },
 ]);
 
