@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  background-color: rgb(255, 5, 122);
+  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.linkContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.linkEle {
+  text-decoration: none;
+  color: black;
+  border: 2px solid black;
+  padding: 10px;
+}

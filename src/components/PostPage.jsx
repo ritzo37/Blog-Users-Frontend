@@ -1,7 +1,7 @@
 import Post from "./Post";
 import { useState, useEffect } from "react";
 const postsUrl = "http://localhost:3000/posts";
-
+import styles from "./PostPage.module.css";
 function PostPage() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
@@ -14,8 +14,7 @@ function PostPage() {
   }, []);
   return (
     <>
-      <h1>Posts : </h1>
-      <div className="post-container">
+      <div className={styles.postsContainer}>
         {posts.map((currPost) => {
           return (
             <Post

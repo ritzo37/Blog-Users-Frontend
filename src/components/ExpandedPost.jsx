@@ -3,6 +3,7 @@ import AddComment from "./AddComment";
 import Comment from "./Comment";
 import { useParams } from "react-router-dom";
 let postUrl = "http://localhost:3000/posts";
+import styles from "./ExpandedPost.module.css";
 
 function ExpandedPost() {
   let params = useParams();
@@ -24,12 +25,19 @@ function ExpandedPost() {
     return <h1>Loading....</h1>;
   } else {
     return (
-      <div className="postContainer">
-        <p>Title : {post.title}</p>
-        <p>Content :{post.content}</p>
-        <p>Author : {post.author.name}</p>
-        <h4>Comments :</h4>
-        <div className="commentsContainer">
+      <div className={styles.postContainer}>
+        <div className={styles.headingPost}>
+          <p className={styles.title}>Title : {post.title}</p>
+          <div className="rightContainer">
+            {" "}
+            <p className={styles.author}>Author :{post.author.name}</p>
+            <p className={styles.createdDate}>Created At: {post.createdAt}</p>
+            <p className={styles.updatedDate}>Last Updated: {post.updatedAt}</p>
+          </div>
+        </div>{" "}
+        <p className={styles.content}>{post.content}</p>
+        <h1 className={styles.commentsHeading}>Comments :</h1>
+        <div className={styles.commentsContainer}>
           {post.comments.map((currComment) => {
             return (
               <Comment

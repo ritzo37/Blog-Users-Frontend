@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Reply from "./Reply";
+import styles from "./Comment.module.css";
 function Comment({
   postId,
   commentId,
@@ -16,7 +18,7 @@ function Comment({
   const [downvoted, setDownvoted] = useState(false);
   const [showReplyContainer, toggleReplyContainer] = useState(false);
   const [replyValue, setReplyValue] = useState("");
-
+  let navigate = useNavigate();
   async function handleUpvote() {
     const headers = { Authorization: `Bearer ${token}` };
     const responseForReq = await fetch(
@@ -26,7 +28,9 @@ function Comment({
         headers,
       }
     );
-    if (responseForReq.status === 409) {
+    if (responseForReq.status === 401) {
+      navigate("/log-in");
+    } else if (responseForReq.status === 409) {
       setUpvoted(true);
     } else {
       const response = await fetch(postUrl);
@@ -43,7 +47,9 @@ function Comment({
         headers,
       }
     );
-    if (responseForReq.status === 409) {
+    if (responseForReq.status === 401) {
+      navigate("/log-in");
+    } else if (responseForReq.status === 409) {
       setDownvoted(true);
     } else {
       const response = await fetch(postUrl);
@@ -57,7 +63,7 @@ function Comment({
   }
 
   async function submitReply() {
-    await fetch(
+    const resObj = await fetch(
       `http://localhost:3000/posts/${postId}/comments/${commentId}/reply`,
       {
         method: "POST",
@@ -68,31 +74,41 @@ function Comment({
         body: JSON.stringify({ content: replyValue }),
       }
     );
-    const posts = await fetch(postUrl);
-    const data = await posts.json();
-    setPost(data);
+    if (resObj.status === 401) {
+      navigate("/log-in");
+    } else {
+      const posts = await fetch(postUrl);
+      const data = await posts.json();
+      setPost(data);
+    }
   }
   return (
-    <div className="commentContainer">
-      <p className="comment">{commentContent}</p>
+    <div className={styles.commentContainer}>
+      <p className={styles.commentContent}>{commentContent}</p>
       <p>Author : {author}</p>
-      <button className="upvote-btn" onClick={handleUpvote}>
-        {upvotes}
-      </button>
-      <button className="downvote-btn" onClick={handleDownvote}>
-        {downvotes}
-      </button>
+      <div className={styles.upvoteDownvoteContainer}>
+        <button className={styles.upvoteBtn} onClick={handleUpvote}>
+          Upvotes : {upvotes}
+        </button>
+        <button className={styles.downvoteBtn} onClick={handleDownvote}>
+          Downvotes : {downvotes}
+        </button>
+      </div>
+
       {upvoted === true && <p>You already have upvoted this comment!</p>}
       {downvoted === true && <p>You already have downvoted this comment</p>}
-      {replies.map((currReply) => {
-        return (
-          <Reply
-            key={currReply.id}
-            authorName={currReply.user.name}
-            content={currReply.content}
-          ></Reply>
-        );
-      })}
+      <div className={styles.replyContainer}>
+        <h1>Replies : </h1>
+        {replies.map((currReply) => {
+          return (
+            <Reply
+              key={currReply.id}
+              authorName={currReply.user.name}
+              content={currReply.content}
+            ></Reply>
+          );
+        })}
+      </div>
       <button onClick={handleReply}>
         {showReplyContainer === true ? "Close" : "Reply"}
       </button>

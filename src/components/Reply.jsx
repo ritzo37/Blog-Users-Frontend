@@ -1,6 +1,7 @@
+import styles from "./Reply.module.css";
 function Reply({ authorName, content }) {
   return (
-    <div className="reply-container">
+    <div className={styles.reply}>
       <p>Content : {content}</p>
       <p>Author : {authorName}</p>
     </div>

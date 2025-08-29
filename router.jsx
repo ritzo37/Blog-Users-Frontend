@@ -5,31 +5,38 @@ import PostPage from "./src/components/PostPage";
 import { createBrowserRouter } from "react-router-dom";
 import AlreadyLoggedIn from "./src/components/AlreadyLoggin";
 import ExpandedPost from "./src/components/ExpandedPost";
+import HomePageContent from "./src/components/HomePageContent";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/sign-up",
-    element: <SignUp />,
-  },
-  {
-    path: "/log-in",
-    element: <LogIn />,
-  },
-  {
-    path: "/already-logged-in",
-    element: <AlreadyLoggedIn />,
-  },
-  {
-    path: "/posts",
-    element: <PostPage />,
-  },
-  {
-    path: "/posts/:postId",
-    element: <ExpandedPost />,
+    children: [
+      {
+        path: "/sign-up",
+        element: <SignUp />,
+      },
+      {
+        path: "/log-in",
+        element: <LogIn />,
+      },
+      {
+        path: "/already-logged-in",
+        element: <AlreadyLoggedIn />,
+      },
+      {
+        path: "/posts",
+        element: <PostPage />,
+      },
+      {
+        path: "/posts/:postId",
+        element: <ExpandedPost />,
+      },
+      {
+        index: true,
+        element: <HomePageContent />,
+      },
+    ],
   },
 ]);
 

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 const signUpUrl = "http://localhost:3000" + "/log-in";
 import { useNavigate } from "react-router";
-
+import styles from "./Login.module.css";
 let didInit = false;
 
 function LogIn() {
   const [username, setUsername] = useState("");
   const [password, setPassowrd] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [error, setError] = useState("");
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function LogIn() {
         return;
       }
     }
-  }, []);
+  }, [navigate]);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
@@ -31,7 +31,7 @@ function LogIn() {
     });
     const data = await response.json();
     if (!response.ok) {
-      setErrors(data);
+      setError(data.message);
     } else {
       localStorage.setItem("token", JSON.stringify(data.token));
       navigate("/");
@@ -39,26 +39,37 @@ function LogIn() {
   }
   return (
     <>
-      {errors !== null && errors.message}
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassowrd(e.target.value)}
-          />
-        </label>
+      <h1 className={styles.heading}>Login </h1>
+      <form onSubmit={handleFormSubmit} className={styles.form}>
+        {error.length > 0 && (
+          <>
+            <p className={styles.errorContainer}>{error}</p>
+          </>
+        )}
+        <div>
+          <label htmlFor="name">
+            Name
+            <input
+              className={styles.inputFields}
+              type="text"
+              value={username}
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </label>
+          <label htmlFor="password">
+            Password
+            <input
+              className={styles.inputFields}
+              type="password"
+              value={password}
+              required
+              onChange={(e) => setPassowrd(e.target.value)}
+            />
+          </label>
 
-        <button>Submit</button>
+          <button className={styles.button}>Submit</button>
+        </div>
       </form>
     </>
   );

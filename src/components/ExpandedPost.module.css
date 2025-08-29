@@ -1,0 +1,35 @@
+.title {
+  display: flex;
+  justify-content: center;
+  font-size: 50px;
+}
+
+.content {
+  display: flex;
+  font-size: 30px;
+  margin: 2%;
+  padding: 5%;
+}
+.commentsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin: 2%;
+}
+.author {
+  font-size: 30px;
+}
+.date {
+  font-size: 30px;
+}
+.headingPost {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2%;
+  margin: 2%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.commentsHeading {
+  margin: 2%;
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./SignUp.module.css";
 const signUpUrl = "http://localhost:3000" + "/sign-up";
 import { useNavigate } from "react-router";
 function SignUp() {
@@ -17,6 +18,7 @@ function SignUp() {
       body: JSON.stringify({ username, password, confirmPassword }),
     });
     const data = await response.json();
+    console.log(data);
     if (data.errors) {
       setErrors(data.errors);
     } else {
@@ -25,41 +27,51 @@ function SignUp() {
   }
   return (
     <>
-      {errors.length > 0 && (
-        <>
-          <ul>
-            {errors.map((currError) => {
-              return <li>{currError.msg}</li>;
-            })}
-          </ul>
-        </>
-      )}
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassowrd(e.target.value)}
-          />
-        </label>
-        <label htmlFor="confirmPassword">
-          Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </label>
-        <button>Submit</button>
+      <h1 className={styles.heading}>Sign Up</h1>
+      <form onSubmit={handleFormSubmit} className={styles.form}>
+        {errors.length > 0 && (
+          <>
+            <ul className={styles.ul}>
+              {" "}
+              {errors.map((currError) => {
+                return <li className={styles.li}>{currError.msg}</li>;
+              })}
+            </ul>
+          </>
+        )}
+        <div>
+          <label htmlFor="name">
+            Name
+            <input
+              type="text"
+              value={username}
+              id="name"
+              className={styles.inputFields}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </label>
+          <label htmlFor="password">
+            Password
+            <input
+              type="password"
+              value={password}
+              className={styles.inputFields}
+              onChange={(e) => setPassowrd(e.target.value)}
+              id="password"
+            />
+          </label>
+          <label htmlFor="confirmPassword">
+            Confirm Password
+            <input
+              type="password"
+              className={styles.inputFields}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              id="confirmPassword"
+            />
+          </label>
+          <button className={styles.button}>Submit</button>
+        </div>
       </form>
     </>
   );

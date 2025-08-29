@@ -1,14 +1,14 @@
 import { useState } from "react";
-
+import styles from "./AddComment.module.css";
+import { useNavigate } from "react-router-dom";
 function AddComment({ postId, setPost, postUrl }) {
   const addCommentUrl = `http://localhost:3000/posts/${postId}/comments/`;
   const [addCommentClicked, setAddCommentClicked] = useState(false);
   const [content, setContent] = useState("");
-
-  async function handleAddComent(e) {
-    e.preventDefault();
+  let navigate = useNavigate();
+  async function handleAddComent() {
     const token = localStorage.getItem("token");
-    await fetch(addCommentUrl, {
+    const response = await fetch(addCommentUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,9 +16,13 @@ function AddComment({ postId, setPost, postUrl }) {
       },
       body: JSON.stringify({ content, postId }),
     });
-    const res = await fetch(postUrl);
-    const data = await res.json();
-    setPost(data);
+    if (response.status === 401) {
+      navigate("/log-in");
+    } else {
+      const res = await fetch(postUrl);
+      const data = await res.json();
+      setPost(data);
+    }
   }
 
   function toggleAddComment() {
@@ -26,7 +30,7 @@ function AddComment({ postId, setPost, postUrl }) {
   }
   if (addCommentClicked) {
     return (
-      <div className="addCommentContainer">
+      <div className={styles.addCommentContainer}>
         <label htmlFor="content">
           Comment
           <input
@@ -34,15 +38,24 @@ function AddComment({ postId, setPost, postUrl }) {
             name="content"
             id="content"
             value={content}
+            className={styles.inputField}
             onChange={(e) => setContent(e.target.value)}
           />
         </label>
-        <button onClick={handleAddComent}>Submit</button>
-        <button onClick={toggleAddComment}>Go Back</button>
+        <button onClick={handleAddComent} className={styles.button}>
+          Submit
+        </button>
+        <button onClick={toggleAddComment} className={styles.button}>
+          Go Back
+        </button>
       </div>
     );
   } else {
-    return <button onClick={toggleAddComment}>Add Comment</button>;
+    return (
+      <button onClick={toggleAddComment} className={styles.button}>
+        Add Comment
+      </button>
+    );
   }
 }
 export default AddComment;
