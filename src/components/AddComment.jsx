@@ -6,8 +6,9 @@ function AddComment({ postId, setPost, postUrl }) {
   const [addCommentClicked, setAddCommentClicked] = useState(false);
   const [content, setContent] = useState("");
   let navigate = useNavigate();
+
   async function handleAddComent() {
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("token"));
     const response = await fetch(addCommentUrl, {
       method: "POST",
       headers: {
@@ -16,6 +17,7 @@ function AddComment({ postId, setPost, postUrl }) {
       },
       body: JSON.stringify({ content, postId }),
     });
+    console.log(response);
     if (response.status === 401) {
       navigate("/log-in");
     } else {

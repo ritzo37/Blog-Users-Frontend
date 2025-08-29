@@ -1,6 +1,5 @@
 .postsContainer {
   padding: 20px;
-  border: 2px solid red;
   display: flex;
   justify-content: center;
 }

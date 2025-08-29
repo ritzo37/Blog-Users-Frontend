@@ -5,12 +5,14 @@ import PostPage from "./src/components/PostPage";
 import { createBrowserRouter } from "react-router-dom";
 import AlreadyLoggedIn from "./src/components/AlreadyLoggin";
 import ExpandedPost from "./src/components/ExpandedPost";
+import Error from "./src/components/Error";
 import HomePageContent from "./src/components/HomePageContent";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    errorElement: <Error />,
     children: [
       {
         path: "/sign-up",

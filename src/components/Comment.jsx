@@ -13,7 +13,7 @@ function Comment({
   setPost,
   postUrl,
 }) {
-  const token = localStorage.getItem("token");
+  const token = JSON.parse(localStorage.getItem("token"));
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
   const [showReplyContainer, toggleReplyContainer] = useState(false);
