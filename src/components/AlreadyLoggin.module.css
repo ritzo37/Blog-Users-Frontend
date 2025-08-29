@@ -5,13 +5,12 @@
   padding: 15px;
   margin-top: 1%;
 }
-.inputFields {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  background: #f1f1f1;
-}
 .buttonContainer {
   display: flex;
   gap: 20px;
+}
+
+.container {
+  padding: 5%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

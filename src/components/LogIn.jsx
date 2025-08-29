@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 const signUpUrl = "http://localhost:3000" + "/log-in";
 import { useNavigate } from "react-router";
 import styles from "./Login.module.css";
-let didInit = false;
 
 function LogIn() {
   const [username, setUsername] = useState("");
@@ -12,11 +11,9 @@ function LogIn() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!didInit) {
-      if (token) {
-        navigate("/already-logged-in");
-        return;
-      }
+    if (token) {
+      navigate("/already-logged-in");
+      return;
     }
   }, [navigate]);
 

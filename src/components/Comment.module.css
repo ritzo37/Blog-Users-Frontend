@@ -21,3 +21,11 @@
   padding: 15px;
   margin-top: 1%;
 }
+
+.inputFields {
+  margin: 1%;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: #f1f1f1;
+}

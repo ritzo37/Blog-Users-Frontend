@@ -7,7 +7,8 @@ function AddComment({ postId, setPost, postUrl }) {
   const [content, setContent] = useState("");
   let navigate = useNavigate();
 
-  async function handleAddComent() {
+  async function handleAddComment(e) {
+    e.preventDefault();
     const token = JSON.parse(localStorage.getItem("token"));
     const response = await fetch(addCommentUrl, {
       method: "POST",
@@ -17,13 +18,14 @@ function AddComment({ postId, setPost, postUrl }) {
       },
       body: JSON.stringify({ content, postId }),
     });
-    console.log(response);
+
     if (response.status === 401) {
       navigate("/log-in");
     } else {
       const res = await fetch(postUrl);
       const data = await res.json();
       setPost(data);
+      toggleAddComment();
     }
   }
 
@@ -32,25 +34,26 @@ function AddComment({ postId, setPost, postUrl }) {
   }
   if (addCommentClicked) {
     return (
-      <div className={styles.addCommentContainer}>
-        <label htmlFor="content">
-          Comment
-          <input
-            type="text"
-            name="content"
-            id="content"
-            value={content}
-            className={styles.inputField}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </label>
-        <button onClick={handleAddComent} className={styles.button}>
-          Submit
-        </button>
-        <button onClick={toggleAddComment} className={styles.button}>
-          Go Back
-        </button>
-      </div>
+      <form onSubmit={handleAddComment} className={styles.addCommentContainer}>
+        <label htmlFor="content">Comment</label>
+        <input
+          type="text"
+          name="content"
+          id="content"
+          value={content}
+          className={styles.inputFields}
+          required
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <div className={styles.buttonContainer}>
+          <button className={styles.button} disabled={!content.length}>
+            Submit
+          </button>
+          <button onClick={toggleAddComment} className={styles.button}>
+            Close
+          </button>
+        </div>
+      </form>
     );
   } else {
     return (

@@ -62,7 +62,8 @@ function Comment({
     toggleReplyContainer(!showReplyContainer);
   }
 
-  async function submitReply() {
+  async function submitReply(e) {
+    e.preventDefault();
     const resObj = await fetch(
       `http://localhost:3000/posts/${postId}/comments/${commentId}/reply`,
       {
@@ -80,6 +81,7 @@ function Comment({
       const posts = await fetch(postUrl);
       const data = await posts.json();
       setPost(data);
+      handleReply();
     }
   }
   return (
@@ -113,16 +115,18 @@ function Comment({
         {showReplyContainer === true ? "Close" : "Reply"}
       </button>
       {showReplyContainer === true && (
-        <div className="reply-container">
-          <label htmlFor="replyContent"></label>
+        <form className="reply-container" onSubmit={submitReply}>
+          <label htmlFor="replyContent">Comment</label>
           <input
             type="text"
             id="replyContent"
             onChange={(e) => setReplyValue(e.target.value)}
             value={replyValue}
+            className={styles.inputFields}
+            required
           />
-          <button onClick={submitReply}>Submit</button>
-        </div>
+          <button disabled={!replyValue.length}>Submit</button>
+        </form>
       )}
     </div>
   );

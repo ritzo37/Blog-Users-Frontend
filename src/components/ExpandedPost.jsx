@@ -10,7 +10,14 @@ function ExpandedPost() {
   const [post, setPost] = useState();
   const [state, setState] = useState("loading");
   const postId = params.postId;
-
+  function getFormattedDate(oldDate) {
+    let newDate = "";
+    for (let i = 0; i < oldDate.length; i++) {
+      if (oldDate[i] === "T") break;
+      newDate += oldDate[i];
+    }
+    return newDate;
+  }
   useEffect(() => {
     const getPostData = async function () {
       const data = await fetch(postUrl + `/${postId}`);
@@ -31,8 +38,12 @@ function ExpandedPost() {
           <div className="rightContainer">
             {" "}
             <p className={styles.author}>Author :{post.author.name}</p>
-            <p className={styles.createdDate}>Created At: {post.createdAt}</p>
-            <p className={styles.updatedDate}>Last Updated: {post.updatedAt}</p>
+            <p className={styles.createdDate}>
+              Created At: {getFormattedDate(post.createdAt)}
+            </p>
+            <p className={styles.updatedDate}>
+              Last Updated: {getFormattedDate(post.updatedAt)}
+            </p>
           </div>
         </div>{" "}
         <p className={styles.content}>{post.content}</p>

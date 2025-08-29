@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import styles from "./AlreadyLoggin.module.css";
 function AlreadyLoggedIn() {
   let navigate = useNavigate();
   function handeLogout() {
@@ -10,11 +10,18 @@ function AlreadyLoggedIn() {
     navigate("/");
   }
   return (
-    <>
-      <h1>You are already logged in mate!</h1>
-      <button onClick={() => handeLogout()}>Logout</button>
-      <button onClick={handleHomeClick}>Home</button>
-    </>
+    <div className={styles.container}>
+      <h1>You are already logged in!</h1>
+      <div className={styles.buttonContainer}>
+        {" "}
+        <button className={styles.button} onClick={() => handeLogout()}>
+          Logout
+        </button>
+        <button className={styles.button} onClick={handleHomeClick}>
+          Home
+        </button>
+      </div>
+    </div>
   );
 }
 
