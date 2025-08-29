@@ -4,11 +4,14 @@ import Comment from "./Comment";
 import { useParams } from "react-router-dom";
 let postUrl = "http://localhost:3000/posts";
 import styles from "./ExpandedPost.module.css";
-
+import Pagination from "./Pagination";
 function ExpandedPost() {
   let params = useParams();
   const [post, setPost] = useState();
   const [state, setState] = useState("loading");
+  const [totalComments, setTotalComments] = useState();
+  const [startingCommentIndex, setStartingCommentIndex] = useState(1);
+  const [endingCommentIndex, setEndingCommentIndex] = useState(6);
   const postId = params.postId;
   function getFormattedDate(oldDate) {
     let newDate = "";
@@ -23,6 +26,7 @@ function ExpandedPost() {
       const data = await fetch(postUrl + `/${postId}`);
       const currPost = await data.json();
       setPost(currPost);
+      setTotalComments(currPost.comments.length);
       setState("loaded");
     };
     getPostData();
@@ -31,6 +35,10 @@ function ExpandedPost() {
   if (state === "loading") {
     return <h1>Loading....</h1>;
   } else {
+    let comments = post.comments.slice(
+      startingCommentIndex,
+      endingCommentIndex
+    );
     return (
       <div className={styles.postContainer}>
         <div className={styles.headingPost}>
@@ -49,7 +57,7 @@ function ExpandedPost() {
         <p className={styles.content}>{post.content}</p>
         <h1 className={styles.commentsHeading}>Comments :</h1>
         <div className={styles.commentsContainer}>
-          {post.comments.map((currComment) => {
+          {comments.map((currComment) => {
             return (
               <Comment
                 key={currComment.cid}
@@ -66,10 +74,17 @@ function ExpandedPost() {
             );
           })}
         </div>
+        <Pagination
+          setStartingCommentIndex={setStartingCommentIndex}
+          setEndingCommentIndex={setEndingCommentIndex}
+          totalComments={totalComments}
+        ></Pagination>
         <AddComment
           postId={post.postId}
           setPost={setPost}
           postUrl={`http://localhost:3000/posts/${postId}`}
+          setTotalComments={setTotalComments}
+          totalComments={totalComments}
         ></AddComment>
       </div>
     );

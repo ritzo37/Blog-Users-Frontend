@@ -1,7 +1,13 @@
 import { useState } from "react";
 import styles from "./AddComment.module.css";
 import { useNavigate } from "react-router-dom";
-function AddComment({ postId, setPost, postUrl }) {
+function AddComment({
+  postId,
+  setPost,
+  postUrl,
+  setTotalComments,
+  totalComments,
+}) {
   const addCommentUrl = `http://localhost:3000/posts/${postId}/comments/`;
   const [addCommentClicked, setAddCommentClicked] = useState(false);
   const [content, setContent] = useState("");
@@ -26,6 +32,7 @@ function AddComment({ postId, setPost, postUrl }) {
       const data = await res.json();
       setPost(data);
       toggleAddComment();
+      setTotalComments(totalComments + 1);
     }
   }
 
@@ -57,7 +64,7 @@ function AddComment({ postId, setPost, postUrl }) {
     );
   } else {
     return (
-      <button onClick={toggleAddComment} className={styles.button}>
+      <button onClick={toggleAddComment} className={styles.addCommentButton}>
         Add Comment
       </button>
     );

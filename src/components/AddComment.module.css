@@ -3,7 +3,18 @@
   border: 2px solid black;
   background-color: white;
   padding: 15px;
-  margin-top: 1%;
+}
+.addCommentButton {
+  max-width: fit-content;
+  border: 2px solid black;
+  background-color: white;
+  padding: 15px;
+  margin: 2%;
+}
+
+.addCommentContainer {
+  margin: 2%;
+  padding: 10px;
 }
 .inputFields {
   width: 100%;
@@ -14,4 +25,5 @@
 .buttonContainer {
   display: flex;
   gap: 20px;
+  margin: 2%;
 }
