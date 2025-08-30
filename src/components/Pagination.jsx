@@ -13,11 +13,8 @@ export default function Pagination({
   }
   function handlePageClick(currPage) {
     let prevIndexes = (currPage - 1) * 5;
-    let startingCommentIndex = prevIndexes + 1;
-    let endingCommentIndex = Math.min(
-      startingCommentIndex + 5,
-      totalComments + 1
-    );
+    let startingCommentIndex = prevIndexes;
+    let endingCommentIndex = Math.min(startingCommentIndex + 5, totalComments);
     setStartingCommentIndex(startingCommentIndex);
     setEndingCommentIndex(endingCommentIndex);
     setClickedPage(currPage);

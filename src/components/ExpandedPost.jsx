@@ -10,8 +10,8 @@ function ExpandedPost() {
   const [post, setPost] = useState();
   const [state, setState] = useState("loading");
   const [totalComments, setTotalComments] = useState();
-  const [startingCommentIndex, setStartingCommentIndex] = useState(1);
-  const [endingCommentIndex, setEndingCommentIndex] = useState(6);
+  const [startingCommentIndex, setStartingCommentIndex] = useState(0);
+  const [endingCommentIndex, setEndingCommentIndex] = useState(5);
   const postId = params.postId;
   function getFormattedDate(oldDate) {
     let newDate = "";
