@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Reply from "./Reply";
 import styles from "./Comment.module.css";
-function Comment({
+const Comment = function Comment({
   postId,
   commentId,
   commentContent,
@@ -10,8 +10,8 @@ function Comment({
   upvotes,
   downvotes,
   replies,
-  setPost,
-  postUrl,
+  setComments,
+  commentsUrl,
 }) {
   const token = JSON.parse(localStorage.getItem("token"));
   const [upvoted, setUpvoted] = useState(false);
@@ -33,9 +33,9 @@ function Comment({
     } else if (responseForReq.status === 409) {
       setUpvoted(true);
     } else {
-      const response = await fetch(postUrl);
+      const response = await fetch(commentsUrl);
       const data = await response.json();
-      setPost(data);
+      setComments(data);
     }
   }
   async function handleDownvote() {
@@ -52,9 +52,9 @@ function Comment({
     } else if (responseForReq.status === 409) {
       setDownvoted(true);
     } else {
-      const response = await fetch(postUrl);
+      const response = await fetch(commentsUrl);
       const data = await response.json();
-      setPost(data);
+      setComments(data);
     }
   }
 
@@ -78,9 +78,9 @@ function Comment({
     if (resObj.status === 401) {
       navigate("/log-in");
     } else {
-      const posts = await fetch(postUrl);
+      const posts = await fetch(commentsUrl);
       const data = await posts.json();
-      setPost(data);
+      setComments(data);
       handleReply();
     }
   }
@@ -101,15 +101,23 @@ function Comment({
       {downvoted === true && <p>You already have downvoted this comment</p>}
       <div className={styles.replyContainer}>
         <h1>Replies : </h1>
-        {replies.map((currReply) => {
-          return (
-            <Reply
-              key={currReply.id}
-              authorName={currReply.user.name}
-              content={currReply.content}
-            ></Reply>
-          );
-        })}
+        {replies.length > 0 &&
+          replies.map((currComment) => {
+            return (
+              <Comment
+                key={currComment.cid}
+                commentContent={currComment.content}
+                author={currComment.user.name}
+                upvotes={currComment.upvotes.length}
+                downvotes={currComment.downvotes.length}
+                commentId={currComment.cid}
+                postId={postId}
+                replies={currComment.replies}
+                setComments={setComments}
+                commentsUrl={commentsUrl}
+              ></Comment>
+            );
+          })}
       </div>
       <button onClick={handleReply}>
         {showReplyContainer === true ? "Close" : "Reply"}
@@ -130,5 +138,5 @@ function Comment({
       )}
     </div>
   );
-}
+};
 export default Comment;

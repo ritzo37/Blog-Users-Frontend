@@ -3,12 +3,11 @@ import styles from "./AddComment.module.css";
 import { useNavigate } from "react-router-dom";
 function AddComment({
   postId,
-  setPost,
-  postUrl,
+  commentsUrl,
+  setComments,
   setTotalComments,
   totalComments,
 }) {
-  const addCommentUrl = `http://localhost:3000/posts/${postId}/comments/`;
   const [addCommentClicked, setAddCommentClicked] = useState(false);
   const [content, setContent] = useState("");
   let navigate = useNavigate();
@@ -16,7 +15,7 @@ function AddComment({
   async function handleAddComment(e) {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem("token"));
-    const response = await fetch(addCommentUrl, {
+    const response = await fetch(commentsUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,9 +27,9 @@ function AddComment({
     if (response.status === 401) {
       navigate("/log-in");
     } else {
-      const res = await fetch(postUrl);
+      const res = await fetch(commentsUrl);
       const data = await res.json();
-      setPost(data);
+      setComments(data);
       toggleAddComment();
       setTotalComments(totalComments + 1);
     }

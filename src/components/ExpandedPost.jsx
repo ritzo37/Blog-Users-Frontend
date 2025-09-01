@@ -7,7 +7,8 @@ import styles from "./ExpandedPost.module.css";
 import Pagination from "./Pagination";
 function ExpandedPost() {
   let params = useParams();
-  const [post, setPost] = useState();
+  const [post, setPostInfo] = useState();
+  const [comments, setComments] = useState();
   const [state, setState] = useState("loading");
   const [totalComments, setTotalComments] = useState();
   const [startingCommentIndex, setStartingCommentIndex] = useState(0);
@@ -22,23 +23,23 @@ function ExpandedPost() {
     return newDate;
   }
   useEffect(() => {
-    const getPostData = async function () {
-      const data = await fetch(postUrl + `/${postId}`);
-      const currPost = await data.json();
-      setPost(currPost);
-      setTotalComments(currPost.comments.length);
-      setState("loaded");
+    const getData = async function () {
+      const data1 = await fetch(postUrl + `/${postId}/comments`);
+      const data2 = await fetch(postUrl + `/${postId}`);
+      const currData1 = await data1.json();
+      const currData2 = await data2.json();
+      setComments(currData1);
+      setTotalComments(currData1.length);
+      setPostInfo(currData2);
+      setState("Loaded");
     };
-    getPostData();
+    getData();
   }, [postId]);
 
   if (state === "loading") {
     return <h1>Loading....</h1>;
   } else {
-    let comments = post.comments.slice(
-      startingCommentIndex,
-      endingCommentIndex
-    );
+    let currComments = comments.slice(startingCommentIndex, endingCommentIndex);
     return (
       <div className={styles.postContainer}>
         <div className={styles.headingPost}>
@@ -57,7 +58,7 @@ function ExpandedPost() {
         <p className={styles.content}>{post.content}</p>
         <h1 className={styles.commentsHeading}>Comments :</h1>
         <div className={styles.commentsContainer}>
-          {comments.map((currComment) => {
+          {currComments.map((currComment) => {
             return (
               <Comment
                 key={currComment.cid}
@@ -68,8 +69,8 @@ function ExpandedPost() {
                 commentId={currComment.cid}
                 postId={post.postId}
                 replies={currComment.replies}
-                setPost={setPost}
-                postUrl={`http://localhost:3000/posts/${postId}`}
+                setComments={setComments}
+                commentsUrl={`http://localhost:3000/posts/${postId}/comments`}
               ></Comment>
             );
           })}
@@ -81,8 +82,8 @@ function ExpandedPost() {
         ></Pagination>
         <AddComment
           postId={post.postId}
-          setPost={setPost}
-          postUrl={`http://localhost:3000/posts/${postId}`}
+          setComments={setComments}
+          commentsUrl={`http://localhost:3000/posts/${postId}/comments`}
           setTotalComments={setTotalComments}
           totalComments={totalComments}
         ></AddComment>
