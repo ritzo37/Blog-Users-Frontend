@@ -22,7 +22,8 @@ const Comment = function Comment({
   async function handleUpvote() {
     const headers = { Authorization: `Bearer ${token}` };
     const responseForReq = await fetch(
-      `http://localhost:3000/posts/${postId}/comments/${commentId}/upvote`,
+      import.meta.env.VITE_BASEURL +
+        `/posts/${postId}/comments/${commentId}/upvote`,
       {
         method: "POST",
         headers,
@@ -41,7 +42,8 @@ const Comment = function Comment({
   async function handleDownvote() {
     const headers = { Authorization: `Bearer ${token}` };
     const responseForReq = await fetch(
-      `http://localhost:3000/posts/${postId}/comments/${commentId}/downvote`,
+      import.meta.env.VITE_BASEURL +
+        `/posts/${postId}/comments/${commentId}/downvote`,
       {
         method: "POST",
         headers,
@@ -65,7 +67,8 @@ const Comment = function Comment({
   async function submitReply(e) {
     e.preventDefault();
     const resObj = await fetch(
-      `http://localhost:3000/posts/${postId}/comments/${commentId}/reply`,
+      import.meta.env.VITE_BASEURL +
+        `/posts/${postId}/comments/${commentId}/reply`,
       {
         method: "POST",
         headers: {

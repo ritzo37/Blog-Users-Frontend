@@ -1,23 +1,19 @@
 import styles from "./Pagination.module.css";
 import { useState } from "react";
 export default function Pagination({
-  setStartingCommentIndex,
-  setEndingCommentIndex,
+  pageNumber,
+  setPageNumber,
   totalComments,
 }) {
-  const [clickedPage, setClickedPage] = useState(1);
+  const [clickedPage, setClickedPage] = useState(pageNumber);
   let pages = [];
   const pagesReq = Math.ceil(totalComments / 5);
   for (let i = 1; i <= pagesReq; i++) {
     pages.push(i);
   }
   function handlePageClick(currPage) {
-    let prevIndexes = (currPage - 1) * 5;
-    let startingCommentIndex = prevIndexes;
-    let endingCommentIndex = Math.min(startingCommentIndex + 5, totalComments);
-    setStartingCommentIndex(startingCommentIndex);
-    setEndingCommentIndex(endingCommentIndex);
     setClickedPage(currPage);
+    setPageNumber(currPage);
   }
   return (
     <div className={styles.pageContainer}>

@@ -6,7 +6,7 @@ function AddComment({
   commentsUrl,
   setComments,
   setTotalComments,
-  totalComments,
+  pageNumber,
 }) {
   const [addCommentClicked, setAddCommentClicked] = useState(false);
   const [content, setContent] = useState("");
@@ -27,11 +27,11 @@ function AddComment({
     if (response.status === 401) {
       navigate("/log-in");
     } else {
-      const res = await fetch(commentsUrl);
+      const res = await fetch(commentsUrl + `${pageNumber}`);
       const data = await res.json();
       setComments(data);
       toggleAddComment();
-      setTotalComments(totalComments + 1);
+      setTotalComments((prev) => prev + 1);
     }
   }
 

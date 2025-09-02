@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import AddComment from "./AddComment";
 import Comment from "./Comment";
 import { useParams } from "react-router-dom";
-let postUrl = "http://localhost:3000/posts";
+let postUrl = import.meta.env.VITE_BASEURL + "/posts";
 import styles from "./ExpandedPost.module.css";
 import Pagination from "./Pagination";
 function ExpandedPost() {
   let params = useParams();
   const [post, setPostInfo] = useState();
   const [comments, setComments] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
   const [state, setState] = useState("loading");
   const [totalComments, setTotalComments] = useState();
-  const [startingCommentIndex, setStartingCommentIndex] = useState(0);
-  const [endingCommentIndex, setEndingCommentIndex] = useState(5);
   const postId = params.postId;
   function getFormattedDate(oldDate) {
     let newDate = "";
@@ -24,22 +23,23 @@ function ExpandedPost() {
   }
   useEffect(() => {
     const getData = async function () {
-      const data1 = await fetch(postUrl + `/${postId}/comments`);
+      const data1 = await fetch(postUrl + `/${postId}/comments/${pageNumber}`);
       const data2 = await fetch(postUrl + `/${postId}`);
+      const data3 = await fetch(postUrl + `/${postId}/comments/total`);
       const currData1 = await data1.json();
       const currData2 = await data2.json();
+      const currData3 = await data3.json();
       setComments(currData1);
-      setTotalComments(currData1.length);
+      setTotalComments(currData3);
       setPostInfo(currData2);
       setState("Loaded");
     };
     getData();
-  }, [postId]);
+  }, [postId, pageNumber]);
 
   if (state === "loading") {
     return <h1>Loading....</h1>;
   } else {
-    let currComments = comments.slice(startingCommentIndex, endingCommentIndex);
     return (
       <div className={styles.postContainer}>
         <div className={styles.headingPost}>
@@ -58,34 +58,41 @@ function ExpandedPost() {
         <p className={styles.content}>{post.content}</p>
         <h1 className={styles.commentsHeading}>Comments :</h1>
         <div className={styles.commentsContainer}>
-          {currComments.map((currComment) => {
-            return (
-              <Comment
-                key={currComment.cid}
-                commentContent={currComment.content}
-                author={currComment.user.name}
-                upvotes={currComment.upvotes.length}
-                downvotes={currComment.downvotes.length}
-                commentId={currComment.cid}
-                postId={post.postId}
-                replies={currComment.replies}
-                setComments={setComments}
-                commentsUrl={`http://localhost:3000/posts/${postId}/comments`}
-              ></Comment>
-            );
-          })}
+          {comments.length > 0 &&
+            comments.map((currComment) => {
+              return (
+                <Comment
+                  key={currComment.cid}
+                  commentContent={currComment.content}
+                  author={currComment.user.name}
+                  upvotes={currComment.upvotes.length}
+                  downvotes={currComment.downvotes.length}
+                  commentId={currComment.cid}
+                  postId={post.postId}
+                  replies={currComment.replies}
+                  setComments={setComments}
+                  commentsUrl={
+                    import.meta.env.VITE_BASEURL +
+                    `/posts/${postId}/comments/${pageNumber}`
+                  }
+                ></Comment>
+              );
+            })}
         </div>
         <Pagination
-          setStartingCommentIndex={setStartingCommentIndex}
-          setEndingCommentIndex={setEndingCommentIndex}
+          pageNumber={pageNumber}
           totalComments={totalComments}
+          setPageNumber={setPageNumber}
         ></Pagination>
         <AddComment
           postId={post.postId}
           setComments={setComments}
-          commentsUrl={`http://localhost:3000/posts/${postId}/comments`}
+          commentsUrl={
+            import.meta.env.VITE_BASEURL + `/posts/${postId}/comments/`
+          }
           setTotalComments={setTotalComments}
           totalComments={totalComments}
+          pageNumber={pageNumber}
         ></AddComment>
       </div>
     );
