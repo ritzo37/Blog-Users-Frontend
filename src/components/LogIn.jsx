@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-const signUpUrl = "http://localhost:3000" + "/log-in";
+const signUpUrl = import.meta.env.VITE_BASEURL + "/log-in";
 import { useNavigate } from "react-router";
 import styles from "./Login.module.css";
 

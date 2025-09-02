@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./SignUp.module.css";
-const signUpUrl = "http://localhost:3000" + "/sign-up";
+const signUpUrl = import.meta.env.VITE_BASEURL + "/sign-up";
 import { useNavigate } from "react-router";
 function SignUp() {
   let navigate = useNavigate();
